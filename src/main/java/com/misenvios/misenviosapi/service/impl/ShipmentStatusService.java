@@ -51,12 +51,15 @@ public class ShipmentStatusService implements IShipmentStatusService {
     }
 
     private void updateShipmentLastStatus(Shipment shipment, List<ShipmentStatusDTO> statuses) {
-        statuses.stream()
-                .findFirst()
-                .ifPresent(latest -> {
-                    shipment.setLastStatus(latest.getStatus());
-                    shipment.setLastUpdatedAt(latest.getDate());
-                });
+        if(statuses == null || statuses.isEmpty()) return;
+        ShipmentStatusDTO latest = statuses.getFirst();
+
+        if (latest.getStatus() != null && !latest.getStatus().isBlank()){
+            shipment.setLastStatus(latest.getStatus());
+        } else {
+            shipment.setLastStatus(latest.getHistory());
+        }
+        shipment.setLastUpdatedAt(latest.getDate());
     }
 
     @Override

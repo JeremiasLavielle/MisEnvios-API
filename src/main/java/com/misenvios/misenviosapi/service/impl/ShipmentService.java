@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShipmentService implements IShipmentService {
@@ -39,9 +40,24 @@ public class ShipmentService implements IShipmentService {
 
     @Override
     public ShipmentSummaryDTO newShipment(Long userId, ShipmentRequestDTO dto) {
-        if (shipmentRepository.findByTrackingCode(dto.getTrackingCode()).isPresent()) {
+
+        Optional<Shipment> shipmentOpt = shipmentRepository.findByTrackingCode(dto.getTrackingCode());
+
+        if(shipmentOpt.isPresent()){
+            Shipment shipment = shipmentOpt.get();
+
+            if (!shipment.isActive()){
+                shipment.setActive(true);
+                shipment.setName(dto.getName());
+                shipment.setCourier(courierResolverService.resolve(shipment.getTrackingCode()));
+
+                Shipment shipmentSaved = shipmentRepository.save(shipment);
+                return ShipmentMapper.toSummaryDTO(shipmentSaved);
+            }
+
             throw new ShipmentAlreadyExistsException();
         }
+
         User user = getById(userId);
         Shipment shipment = ShipmentMapper.toEntity(dto, user);
         shipment.setCourier(courierResolverService.resolve(shipment.getTrackingCode()));
