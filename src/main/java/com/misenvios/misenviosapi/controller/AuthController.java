@@ -36,6 +36,9 @@ public class AuthController {
         );
         UserDetails userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
         String token = jwtService.generateToken(userDetails);
+
+
+
         return ResponseEntity.ok(token);
     }
 }

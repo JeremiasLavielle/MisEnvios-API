@@ -28,6 +28,7 @@ public class ShipmentMapper {
                 .name(s.getName())
                 .lastStatus(s.getLastStatus())
                 .lastUpdatedAt(s.getLastUpdatedAt())
+                .lastPlant(s.getLastPlant())
                 .build();
     }
 

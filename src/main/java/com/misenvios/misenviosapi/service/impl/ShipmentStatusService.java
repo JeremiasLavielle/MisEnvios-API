@@ -60,6 +60,7 @@ public class ShipmentStatusService implements IShipmentStatusService {
             shipment.setLastStatus(latest.getHistory());
         }
         shipment.setLastUpdatedAt(latest.getDate());
+        shipment.setLastPlant(latest.getPlant());
     }
 
     @Override

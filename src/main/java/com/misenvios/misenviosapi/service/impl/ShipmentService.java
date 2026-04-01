@@ -50,7 +50,6 @@ public class ShipmentService implements IShipmentService {
                 shipment.setActive(true);
                 shipment.setName(dto.getName());
                 shipment.setCourier(courierResolverService.resolve(shipment.getTrackingCode()));
-
                 Shipment shipmentSaved = shipmentRepository.save(shipment);
                 return ShipmentMapper.toSummaryDTO(shipmentSaved);
             }
@@ -71,6 +70,7 @@ public class ShipmentService implements IShipmentService {
         shipment = shipmentStatusService.updateShipmentStatus(shipment);
         return ShipmentMapper.toSummaryDTO(shipment);
     }
+
 
     @Override
     public List<ShipmentSummaryDTO> getShipments(Long id) throws Exception {

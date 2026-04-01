@@ -23,6 +23,7 @@ public class Shipment {
     private String name;
     private String lastStatus;
     private LocalDateTime lastUpdatedAt;
+    private String lastPlant;
     private Courier courier;
     private boolean active;
 

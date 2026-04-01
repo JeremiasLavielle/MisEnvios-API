@@ -14,4 +14,5 @@ public class ShipmentSummaryDTO {
     private String name;
     private String lastStatus;
     private LocalDateTime lastUpdatedAt;
+    private String lastPlant;
 }
