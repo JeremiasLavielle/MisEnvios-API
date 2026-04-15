@@ -41,9 +41,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/users",
-                                "/users/me",
                                 "/auth/login",
-                                "/h2-console/**"
+                                "/auth/register"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -60,14 +59,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("*"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        config.addAllowedOriginPattern("*");
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        return source -> {
-            UrlBasedCorsConfigurationSource s = new UrlBasedCorsConfigurationSource();
-            s.registerCorsConfiguration("/**", config);
-            return s.getCorsConfiguration(source);
-        };
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 
     @Bean
